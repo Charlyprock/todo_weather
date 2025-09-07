@@ -1,4 +1,4 @@
-type Todo = {
+export type Todo = {
     id: string,
     title: string,
     description?: string,
@@ -11,18 +11,18 @@ type Todo = {
     completedAd?: Date
 }
 
-type Coordinates = {
+export type Coordinates = {
     lat: number,
     lon: number,
 }
 
-type Location = {
+export type Location = {
     name: string, // nom de la ville
     contry: string, // code pays
     coordinate: Coordinates
 }
 
-type CurrentWeather = {
+export type CurrentWeather = {
     temperature: number, // temperenture actuelle (C)
     feelsLike: number, // temperature recentire
     humidity: number, // %
@@ -33,7 +33,7 @@ type CurrentWeather = {
     timestamp: Date
 }
 
-type Forecast = {
+export type Forecast = {
     date: Date,
     tempMin: number, // temperature minimal
     tempMax: number, // temperature maximal
@@ -41,25 +41,25 @@ type Forecast = {
     icon: string
 }
 
-type Weather = {
+export type Weather = {
     location: Location,
     current: CurrentWeather,
     forecast: Forecast[]
 }
 
-type SettingsApp = {
+export type SettingsApp = {
     theme: 'light' | 'dark' | 'system',
     defaultLocation: string,
     notification: boolean
 }
 
-type WeatherCache = {
+export type WeatherCache = {
     data: Weather,
     timestamp: Date,
     ttl: number
 }
 
-type LocalStorage = {
+export type LocalStorage = {
     todos: Todo[],
     settings: SettingsApp,
     weather: WeatherCache
