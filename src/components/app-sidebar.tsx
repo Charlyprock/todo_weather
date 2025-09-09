@@ -1,5 +1,6 @@
 import * as React from "react"
-import { Plus } from "lucide-react"
+import { Database } from "lucide-react"
+import Logo from '@/assets/logo.svg'
 
 import { Calendars } from "@/components/calendars"
 import { DatePicker } from "@/components/date-picker"
@@ -19,9 +20,9 @@ import {
 // This is sample data.
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    name: "Ccharly",
+    email: "kouasseu.tamayeu@gmail.com",
+    avatar: Logo,
   },
   calendars: [
     {
@@ -54,8 +55,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton>
-              <Plus />
-              <span>New Calendar</span>
+              <Database />
+              <span>Get Data</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
