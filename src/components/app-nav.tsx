@@ -16,7 +16,7 @@ import { AllLocation } from "./all-location"
 
 export function AppNav(){
     return ( <>
-        <header className="bg-background sticky top-0 flex h-16 shrink-0 items-center justify-between border-b px-4">
+        <header className="bg-background sticky top-0 z-50 flex h-16 shrink-0 items-center justify-between border-b px-4">
             <div className='flex gap-2 items-center'>
                 <SidebarTrigger className="-ml-1" />
                 <Separator

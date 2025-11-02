@@ -37,6 +37,7 @@ export default function ToggleTheme() {
         onCheckedChange={toggleSwitch}
         aria-labelledby={`${id}-off ${id}-on`}
         aria-label="Toggle between dark and light mode"
+        className="h-5 w-9 [&_span]:size-4"
       />
       <span
         id={`${id}-on`}
