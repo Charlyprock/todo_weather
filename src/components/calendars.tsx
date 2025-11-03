@@ -14,6 +14,7 @@ import {
   SidebarMenuItem,
   SidebarMenuBadge
 } from "@/components/ui/sidebar"
+import { NavLink } from "react-router-dom"
 
 export function Calendars({
   calendars,
@@ -27,23 +28,37 @@ export function Calendars({
     <>
       <SidebarMenu className="px-2">
         <SidebarMenuItem>
-          <SidebarMenuButton>
-            <ChartPie /> Daschbord
-          </SidebarMenuButton>
+          <NavLink to="/">
+            {({ isActive }) => (
+              <SidebarMenuButton isActive={isActive} className="cursor-pointer">
+                <ChartPie /> Daschbord
+              </SidebarMenuButton>
+            )}
+          </NavLink>
         </SidebarMenuItem>
 
         <SidebarMenuItem>
-          <SidebarMenuButton>
-            <ListTodo /> Mes Taches
-          </SidebarMenuButton>
-          <SidebarMenuBadge>12</SidebarMenuBadge>
+          <NavLink to="/todo">
+            {({ isActive }) => (<>
+              <SidebarMenuButton isActive={isActive} className="cursor-pointer">
+                <ListTodo /> Mes Taches
+              </SidebarMenuButton>
+              <SidebarMenuBadge>12</SidebarMenuBadge>
+            </>
+            )}
+          </NavLink>
         </SidebarMenuItem>
 
         <SidebarMenuItem>
-          <SidebarMenuButton>
-            <CloudMoon /> La Meteo
-          </SidebarMenuButton>
-          <SidebarMenuBadge>37*c</SidebarMenuBadge>
+          <NavLink to="/weather">
+            {({ isActive }) => (<>
+              <SidebarMenuButton isActive={isActive} className="cursor-pointer">
+                <CloudMoon /> La Meteo
+              </SidebarMenuButton>
+              <SidebarMenuBadge>37*c</SidebarMenuBadge>
+            </>
+            )}
+          </NavLink>
         </SidebarMenuItem>
 
       </SidebarMenu>
@@ -84,7 +99,7 @@ export function Calendars({
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               </SidebarMenu>
-              
+
             </SidebarGroupContent>
           </CollapsibleContent>
         </Collapsible>

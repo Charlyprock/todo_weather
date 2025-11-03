@@ -128,8 +128,11 @@ export function Statistic01(){
                 }
               </span>
               <Badge variant={stat.positive ? 'default' : 'destructive'}>
-                <LucideArrowUp v-if="stat.delta > 0" className="size-4" />
-                <LucideArrowDown v-else className="size-4" />
+                {
+                  stat.delta > 0 ? <LucideArrowUp className="size-4" />
+                  : <LucideArrowDown className="size-4" />
+                }
+                
                 { stat.delta }%
               </Badge>
             </div>
