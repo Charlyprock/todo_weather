@@ -10,61 +10,47 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
   LucideArrowDown,
   LucideArrowUp,
   LucideMoreHorizontal,
-  LucidePin,
-  LucideSettings,
   LucideShare2,
-  LucideTrash,
-  LucideTriangleAlert,
 } from "lucide-react";
 
-export function Statistic01(){
-
+export function StatisticNomberTodo(){
 
   const stats = [
     {
-      title: "All Orders",
+      title: "Taches Total",
       value: 122380,
       delta: 15.1,
       lastMonth: 105922,
       positive: true,
-      prefix: "",
-      suffix: "",
     },
     {
-      title: "Order Created",
+      title: "Taches En Attentes",
       value: 1902380,
       delta: -2.0,
       lastMonth: 2002098,
       positive: false,
-      prefix: "",
-      suffix: "",
     },
     {
-      title: "Organic Sales",
+      title: "Taches En Cours",
       value: 98100000,
       delta: 0.4,
       lastMonth: 97800000,
       positive: true,
-      prefix: "$",
-      suffix: "M",
       format: (v: number) => `$${(v / 1_000_000).toFixed(1)}M`,
       lastFormat: (v: number) => `$${(v / 1_000_000).toFixed(1)}M`,
     },
     {
-      title: "Active Users",
+      title: "Taches Terminer",
       value: 48210,
       delta: 3.7,
       lastMonth: 46480,
       positive: true,
-      prefix: "",
-      suffix: "",
     },
   ];
 
@@ -94,25 +80,8 @@ export function Statistic01(){
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" side="bottom">
                   <DropdownMenuItem>
-                    <LucideSettings />
-                    Settings
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <LucideTriangleAlert />
-                    Add Alert
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <LucidePin />
-                    Pin to Dashboard
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
                     <LucideShare2 />
                     Share
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem variant="destructive">
-                    <LucideTrash />
-                    Remove
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -124,7 +93,7 @@ export function Statistic01(){
                 {
                   stat.format
                     ? stat.format(stat.value)
-                    : stat.prefix + formatNumber(stat.value) + stat.suffix
+                    : formatNumber(stat.value)
                 }
               </span>
               <Badge variant={stat.positive ? 'default' : 'destructive'}>
@@ -142,7 +111,7 @@ export function Statistic01(){
                 {
                   stat.lastFormat
                     ? stat.lastFormat(stat.lastMonth)
-                    : stat.prefix + formatNumber(stat.lastMonth) + stat.suffix
+                    : formatNumber(stat.lastMonth)
                 }
               </span>
             </div>
