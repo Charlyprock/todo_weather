@@ -5,10 +5,10 @@ export type Todo = {
   category: 'Travaille' | 'Personnel' | 'Ugent' | 'Loisir',
   priority: 'Haute' | 'Moyenne' | 'Base',
   status: 'En entente' | 'En cour' | 'Terminer' | 'En retard',
-  dateEnd?: Date,
-  createdAd: Date,
-  updatedAd: Date,
-  completedAd?: Date
+  dateEnd?: Date,  // date a laquelle la tache est prevue pour etre terminer
+  createdAd: Date, // date de creation de la tache
+  updatedAd: Date, // date de derniere modification de la tache
+  completedAd?: Date // date a laquelle la tache a ete terminer
 }
 
 export type Coordinates = {

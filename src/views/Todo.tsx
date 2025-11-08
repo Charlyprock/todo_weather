@@ -54,12 +54,8 @@ import {
     DropdownMenuGroup,
     DropdownMenuItem,
     DropdownMenuLabel,
-    DropdownMenuPortal,
     DropdownMenuSeparator,
     DropdownMenuShortcut,
-    DropdownMenuSub,
-    DropdownMenuSubContent,
-    DropdownMenuSubTrigger,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
@@ -143,8 +139,8 @@ const columns: ColumnDef<Item>[] = [
         enableHiding: false,
     },
     {
-        header: "Name",
-        accessorKey: "name",
+        header: "Titre",
+        accessorKey: "title",
         cell: ({ row }) => (
             <div className="font-medium">{row.getValue("name")}</div>
         ),
@@ -153,19 +149,18 @@ const columns: ColumnDef<Item>[] = [
         enableHiding: false,
     },
     {
-        header: "Email",
-        accessorKey: "email",
+        header: "Description",
+        accessorKey: "description",
         size: 220,
     },
     {
-        header: "Location",
-        accessorKey: "location",
-        cell: ({ row }) => (
-            <div>
-                <span className="text-lg leading-none">{row.original.flag}</span>{" "}
-                {row.getValue("location")}
-            </div>
-        ),
+        header: "Categorie",
+        accessorKey: "category",
+        size: 180,
+    },
+    {
+        header: "Priorite",
+        accessorKey: "priority",
         size: 180,
     },
     {
@@ -445,7 +440,7 @@ export function Todo() {
                                         size={16}
                                         aria-hidden="true"
                                     />
-                                    Delete
+                                    Supprimer
                                     <span className="-me-1 inline-flex h-5 max-h-full items-center rounded border bg-background px-1 font-[inherit] text-[0.625rem] font-medium text-muted-foreground/70">
                                         {table.getSelectedRowModel().rows.length}
                                     </span>
@@ -482,14 +477,14 @@ export function Todo() {
                             </AlertDialogContent>
                         </AlertDialog>
                     )}
-                    {/* Add user button */}
+                    {/* Add todo button */}
                     <Button className="ml-auto" variant="outline">
                         <PlusIcon
                             className="-ms-1 opacity-60"
                             size={16}
                             aria-hidden="true"
                         />
-                        Add user
+                        Add Tache
                     </Button>
                 </div>
             </div>
@@ -582,7 +577,7 @@ export function Todo() {
                                     colSpan={columns.length}
                                     className="h-24 text-center"
                                 >
-                                    No results.
+                                    Aucun resulta.
                                 </TableCell>
                             </TableRow>
                         )}
@@ -595,7 +590,7 @@ export function Todo() {
                 {/* Results per page */}
                 <div className="flex items-center gap-3">
                     <Label htmlFor={id} className="max-sm:sr-only">
-                        Rows per page
+                        Nombre de Ligne
                     </Label>
                     <Select
                         value={table.getState().pagination.pageSize.toString()}
@@ -604,7 +599,7 @@ export function Todo() {
                         }}
                     >
                         <SelectTrigger id={id} className="w-fit whitespace-nowrap">
-                            <SelectValue placeholder="Select number of results" />
+                            <SelectValue placeholder="Selectioner le nombre de resulta" />
                         </SelectTrigger>
                         <SelectContent className="[&_*[role=option]]:ps-2 [&_*[role=option]]:pe-8 [&_*[role=option]>span]:start-auto [&_*[role=option]>span]:end-2">
                             {[5, 10, 25, 50].map((pageSize) => (
@@ -636,7 +631,7 @@ export function Todo() {
                                 table.getRowCount()
                             )}
                         </span>{" "}
-                        of{" "}
+                        Dans{" "}
                         <span className="text-foreground">
                             {table.getRowCount().toString()}
                         </span>
@@ -708,6 +703,7 @@ export function Todo() {
 }
 
 function RowActions({ row }: { row: Row<Item> }) {
+    console.log(row)
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -725,40 +721,22 @@ function RowActions({ row }: { row: Row<Item> }) {
             <DropdownMenuContent align="end">
                 <DropdownMenuGroup>
                     <DropdownMenuItem>
-                        <span>Edit</span>
+                        <span>Editer</span>
                         <DropdownMenuShortcut>⌘E</DropdownMenuShortcut>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
-                        <span>Duplicate</span>
+                        <span>Dupliquer</span>
                         <DropdownMenuShortcut>⌘D</DropdownMenuShortcut>
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                    <DropdownMenuItem>
-                        <span>Archive</span>
-                        <DropdownMenuShortcut>⌘A</DropdownMenuShortcut>
-                    </DropdownMenuItem>
-                    <DropdownMenuSub>
-                        <DropdownMenuSubTrigger>More</DropdownMenuSubTrigger>
-                        <DropdownMenuPortal>
-                            <DropdownMenuSubContent>
-                                <DropdownMenuItem>Move to project</DropdownMenuItem>
-                                <DropdownMenuItem>Move to folder</DropdownMenuItem>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem>Advanced options</DropdownMenuItem>
-                            </DropdownMenuSubContent>
-                        </DropdownMenuPortal>
-                    </DropdownMenuSub>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                    <DropdownMenuItem>Share</DropdownMenuItem>
+                    <DropdownMenuItem>Partager</DropdownMenuItem>
                     <DropdownMenuItem>Add to favorites</DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem className="text-destructive focus:text-destructive">
-                    <span>Delete</span>
+                    <span>Supprimer</span>
                     <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
                 </DropdownMenuItem>
             </DropdownMenuContent>
