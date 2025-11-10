@@ -85,26 +85,18 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-
-type Item = {
-    id: string
-    name: string
-    email: string
-    location: string
-    flag: string
-    status: "Active" | "Inactive" | "Pending"
-    balance: number
-}
+import  { type Todo, sampleTodos } from "@/types"
+import { formatDate } from "@/hooks/use-utils"
 
 // Custom filter function for multi-column searching
-const multiColumnFilterFn: FilterFn<Item> = (row, columnId, filterValue) => {
+const multiColumnFilterFn: FilterFn<Todo> = (row, columnId, filterValue) => {
     const searchableRowContent =
-        `${row.original.name} ${row.original.email}`.toLowerCase()
+        `${row.original.title} ${row.original.description}`.toLowerCase()
     const searchTerm = (filterValue ?? "").toLowerCase()
     return searchableRowContent.includes(searchTerm)
 }
 
-const statusFilterFn: FilterFn<Item> = (
+const statusFilterFn: FilterFn<Todo> = (
     row,
     columnId,
     filterValue: string[]
@@ -114,7 +106,7 @@ const statusFilterFn: FilterFn<Item> = (
     return filterValue.includes(status)
 }
 
-const columns: ColumnDef<Item>[] = [
+const columns: ColumnDef<Todo>[] = [
     {
         id: "select",
         header: ({ table }) => (
@@ -142,9 +134,9 @@ const columns: ColumnDef<Item>[] = [
         header: "Titre",
         accessorKey: "title",
         cell: ({ row }) => (
-            <div className="font-medium">{row.getValue("name")}</div>
+            <div className="font-medium">{row.getValue("title")}</div>
         ),
-        size: 180,
+        size: 140,
         filterFn: multiColumnFilterFn,
         enableHiding: false,
     },
@@ -156,21 +148,25 @@ const columns: ColumnDef<Item>[] = [
     {
         header: "Categorie",
         accessorKey: "category",
-        size: 180,
+        size: 100,
     },
     {
         header: "Priorite",
         accessorKey: "priority",
-        size: 180,
+        size: 100,
     },
     {
         header: "Status",
         accessorKey: "status",
         cell: ({ row }) => (
             <Badge
-                className={cn(
-                    row.getValue("status") === "Inactive" &&
-                    "bg-muted-foreground/60 text-primary-foreground"
+                className={cn("bg-destructive/20 text-destructive",
+                    row.getValue("status") === "En entente" &&
+                    "bg-yellow-500/20 text-yellow-500",
+                    row.getValue("status") === "En cour" &&
+                    "bg-muted-foreground text-primary-foreground",
+                    row.getValue("status") === "Terminer" &&
+                    "bg-green-500/20 text-green-500",
                 )}
             >
                 {row.getValue("status")}
@@ -180,21 +176,11 @@ const columns: ColumnDef<Item>[] = [
         filterFn: statusFilterFn,
     },
     {
-        header: "Performance",
-        accessorKey: "performance",
-    },
-    {
-        header: "Balance",
-        accessorKey: "balance",
-        cell: ({ row }) => {
-            const amount = parseFloat(row.getValue("balance"))
-            const formatted = new Intl.NumberFormat("en-US", {
-                style: "currency",
-                currency: "USD",
-            }).format(amount)
-            return formatted
-        },
-        size: 120,
+        header: "Date de creation",
+        accessorKey: "createdAd",
+        cell: ({ row }) => (
+            <div>{formatDate(row.getValue("createdAd"))}</div>
+        )
     },
     {
         id: "actions",
@@ -217,21 +203,14 @@ export function Todo() {
 
     const [sorting, setSorting] = useState<SortingState>([
         {
-            id: "name",
+            id: "title",
             desc: false,
         },
     ])
 
-    const [data, setData] = useState<Item[]>([])
+    const [data, setData] = useState<Todo[]>([])
     useEffect(() => {
-        async function fetchPosts() {
-            const res = await fetch(
-                "https://raw.githubusercontent.com/origin-space/origin-images/refs/heads/main/users-01_fertyx.json"
-            )
-            const data = await res.json()
-            setData(data)
-        }
-        fetchPosts()
+        setData(sampleTodos)
     }, [])
 
     const handleDeleteRows = () => {
@@ -317,27 +296,27 @@ export function Todo() {
                             ref={inputRef}
                             className={cn(
                                 "peer min-w-60 ps-9",
-                                Boolean(table.getColumn("name")?.getFilterValue()) && "pe-9"
+                                Boolean(table.getColumn("title")?.getFilterValue()) && "pe-9"
                             )}
                             value={
-                                (table.getColumn("name")?.getFilterValue() ?? "") as string
+                                (table.getColumn("title")?.getFilterValue() ?? "") as string
                             }
                             onChange={(e) =>
-                                table.getColumn("name")?.setFilterValue(e.target.value)
+                                table.getColumn("title")?.setFilterValue(e.target.value)
                             }
-                            placeholder="Filtrer par nom ou description..."
+                            placeholder="Filtrer par titre ou description..."
                             type="text"
-                            aria-label="Filter by name or email"
+                            aria-label="Filter by title or description"
                         />
                         <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50">
                             <ListFilterIcon size={16} aria-hidden="true" />
                         </div>
-                        {Boolean(table.getColumn("name")?.getFilterValue()) && (
+                        {Boolean(table.getColumn("title")?.getFilterValue()) && (
                             <button
                                 className="absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-md text-muted-foreground/80 transition-[color,box-shadow] outline-none hover:text-foreground focus:z-10 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
                                 aria-label="Clear filter"
                                 onClick={() => {
-                                    table.getColumn("name")?.setFilterValue("")
+                                    table.getColumn("title")?.setFilterValue("")
                                     if (inputRef.current) {
                                         inputRef.current.focus()
                                     }
@@ -407,7 +386,7 @@ export function Todo() {
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>O/C Colonnes</DropdownMenuLabel>
+                            <DropdownMenuLabel>Colonnes a affichier</DropdownMenuLabel>
                             {table
                                 .getAllColumns()
                                 .filter((column) => column.getCanHide())
@@ -702,8 +681,8 @@ export function Todo() {
     )
 }
 
-function RowActions({ row }: { row: Row<Item> }) {
-    console.log(row)
+function RowActions({ row }: { row: Row<Todo> }) {
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
