@@ -87,6 +87,7 @@ import {
 } from "@/components/ui/table"
 import  { type Todo, sampleTodos } from "@/types"
 import { formatDate } from "@/hooks/use-utils"
+import { toast } from "sonner"
 
 // Custom filter function for multi-column searching
 const multiColumnFilterFn: FilterFn<Todo> = (row, columnId, filterValue) => {
@@ -220,6 +221,14 @@ export function Todo() {
         )
         setData(updatedData)
         table.resetRowSelection()
+
+        toast.success("Mise en corbeille", {
+            description: `Vous avez mis ${selectedRows.length} ${selectedRows.length >1 ? 'taches' : 'tache'} tache dans la corbeille.`,
+            action: {
+                label: "X",
+                onClick: () => console.log("Undo"),
+            },
+        })
     }
 
     const table = useReactTable({
@@ -435,22 +444,22 @@ export function Todo() {
                                     </div>
                                     <AlertDialogHeader>
                                         <AlertDialogTitle>
-                                            Are you absolutely sure?
+                                            Etes vous sure de vouloir effectue cette action ?
                                         </AlertDialogTitle>
                                         <AlertDialogDescription>
-                                            This action cannot be undone. This will permanently delete{" "}
-                                            {table.getSelectedRowModel().rows.length} selected{" "}
+                                            Cette action mettra {" "}
+                                            {table.getSelectedRowModel().rows.length} {" "}
                                             {table.getSelectedRowModel().rows.length === 1
-                                                ? "row"
-                                                : "rows"}
-                                            .
+                                                ? "tache"
+                                                : "taches"}
+                                            {" "} en corbeille.
                                         </AlertDialogDescription>
                                     </AlertDialogHeader>
                                 </div>
                                 <AlertDialogFooter>
-                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                    <AlertDialogAction onClick={handleDeleteRows}>
-                                        Delete
+                                    <AlertDialogCancel>Annuler</AlertDialogCancel>
+                                    <AlertDialogAction className="p-0 bg-transparent" onClick={handleDeleteRows}>
+                                        <Button variant={'destructive'}><TrashIcon /> Placer en Corbeille</Button>
                                     </AlertDialogAction>
                                 </AlertDialogFooter>
                             </AlertDialogContent>

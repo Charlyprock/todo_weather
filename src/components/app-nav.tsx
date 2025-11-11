@@ -1,5 +1,3 @@
-import { toast } from "sonner"
-import { Button } from "@/components/ui/button"
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -23,20 +21,6 @@ export function AppNav(){
                     orientation="vertical"
                     className="mr-2 data-[orientation=vertical]:h-4"
                 />
-                <Button hidden
-                    variant="outline"
-                    onClick={() =>
-                        toast("Event has been created", {
-                            description: "Sunday, December 03, 2023 at 9:00 AM",
-                            action: {
-                                label: "Undo",
-                                onClick: () => console.log("Undo"),
-                            },
-                        })
-                    }
-                >
-                    Show Toast
-                </Button>
 
                 <Breadcrumb>
                     <BreadcrumbList>
