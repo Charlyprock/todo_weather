@@ -1,4 +1,3 @@
-import { useEffect, useId, useMemo, useRef, useState } from "react"
 import {
     type ColumnDef,
     type ColumnFiltersState,
@@ -85,9 +84,26 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import  { type Todo, sampleTodos } from "@/types"
+import {
+    Form,
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form"
+
+import { useEffect, useId, useMemo, useRef, useState } from "react"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { type Todo, sampleTodos } from "@/types"
 import { formatDate } from "@/hooks/use-utils"
 import { toast } from "sonner"
+
+
+const formSchema = z.object<Todo>()
 
 // Custom filter function for multi-column searching
 const multiColumnFilterFn: FilterFn<Todo> = (row, columnId, filterValue) => {
@@ -223,7 +239,7 @@ export function Todo() {
         table.resetRowSelection()
 
         toast.success("Mise en corbeille", {
-            description: `Vous avez mis ${selectedRows.length} ${selectedRows.length >1 ? 'taches' : 'tache'} tache dans la corbeille.`,
+            description: `Vous avez mis ${selectedRows.length} ${selectedRows.length > 1 ? 'taches' : 'tache'} tache dans la corbeille.`,
             action: {
                 label: "X",
                 onClick: () => console.log("Undo"),
@@ -466,14 +482,20 @@ export function Todo() {
                         </AlertDialog>
                     )}
                     {/* Add todo button */}
-                    <Button className="ml-auto" variant="outline">
-                        <PlusIcon
-                            className="-ms-1 opacity-60"
-                            size={16}
-                            aria-hidden="true"
-                        />
-                        Add Tache
-                    </Button>
+                    <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                            <Button className="ml-auto" variant="outline">
+                                <PlusIcon
+                                    className="-ms-1 opacity-60"
+                                    size={16}
+                                    aria-hidden="true"
+                                />
+                                Add Tache
+                            </Button>
+                        </AlertDialogTrigger>
+                        <TodoForm />
+                    </AlertDialog>
+
                 </div>
             </div>
 
@@ -729,5 +751,60 @@ function RowActions({ row }: { row: Row<Todo> }) {
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
+    )
+}
+
+
+export function TodoForm() {
+
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            title: "",
+        },
+    })
+
+    function onSubmit(values: z.infer<typeof formSchema>) {
+        console.log(values)
+    }
+
+    return (
+        <AlertDialogContent>
+            <AlertDialogHeader>
+                <AlertDialogTitle>
+                    Nouvelle tache
+                </AlertDialogTitle>
+                <AlertDialogDescription>
+                    Ajouter une nouvelle tache a votre liste des tache.
+                </AlertDialogDescription>
+            </AlertDialogHeader>
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                    <FormField
+                        control={form.control}
+                        name="title"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Username</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Titre de la tache" {...field} />
+                                </FormControl>
+                                <FormDescription>
+                                    This is your public display name.
+                                </FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>Annuler</AlertDialogCancel>
+                        <AlertDialogAction className="px-2 py-1 bg-primary text-primary-foreground" type="submit">
+                            Sauvegader
+                        </AlertDialogAction>
+                    </AlertDialogFooter>
+                </form>
+            </Form>
+        </AlertDialogContent>
+
     )
 }
